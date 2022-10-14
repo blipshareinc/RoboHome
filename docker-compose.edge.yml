@@ -1,0 +1,66 @@
+version: '3.9'
+services:
+  message-queue:
+    image: rabbitmq:management
+    container_name: rabbitmq-server
+    ports:
+      - 5672:5672
+      - 0.0.0.0:15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+  local-data-service:
+    image: blipshare/local_data_service:latest
+    container_name: local-data-service
+    build:
+      context: ./data-service/local
+      dockerfile: Dockerfile.edge
+    volumes:
+      - ./data-service/local/db:/app/db
+    ports:
+      - 0.0.0.0:11002:11002
+    restart: on-failure
+  message-publisher:
+    image: blipshare/message-publisher:latest
+    container_name: message-publisher
+    build: ./message-service/publisher
+    environment:
+      - HOST=0.0.0.0
+      - PORT=11004
+      - WORKERS=4
+      - BROKER_URL=192.168.0.120
+    ports:
+      - 0.0.0.0:11004:11004
+  message-consumer:
+    image: message-consumer:latest
+    container_name: message-consumer
+    build: ./message-service/consumer
+    environment:
+      - HOST=0.0.0.0
+      - PORT=11005
+      - WORKERS=4
+      - BROKER_URL=192.168.0.120
+      - DATABASE_URL=http://192.168.0.120
+      - DATABASE_PORT=11002
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+      - NSS_USE_SHARED_DB=ENABLED
+    volumes:
+      - ./data:/app/output
+      - /run/user/1000/pulse/native:/run/user/1000/pulse/native
+    devices:
+      - /dev/snd
+    user: 1000:1000
+    ports:
+      - 0.0.0.0:11005:11005
+    restart: on-failure
+ 
+  dashboard:
+    image: arm32v7/nginx
+    container_name: dashboard
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./dashboard/vue3/dist:/usr/share/nginx/html
+      - ./dashboard/.nginx/nginx-proxy.conf:/etc/nginx/conf.d/default.conf
+      - ./data:/usr/share/nginx/html/output
+    ports:
+      - 0.0.0.0:80:80
