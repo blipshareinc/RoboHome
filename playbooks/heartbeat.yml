@@ -1,0 +1,6 @@
+---
+- name: Check heartbeat of all services
+  hosts: all
+  tasks:
+    - name: Pinging hosts 
+      action: ping

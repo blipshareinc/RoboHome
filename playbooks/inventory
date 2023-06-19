@@ -1,0 +1,11 @@
+[dashboard]
+192.168.0.120
+
+[message-queue]
+192.168.0.120
+
+[text-to-speech]
+192.168.0.202
+
+[speech-to-text]
+192.168.0.202
