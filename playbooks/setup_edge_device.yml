@@ -1,0 +1,6 @@
+---
+- name: Setup Edge Device Post OS Installation
+  hosts: all
+  become: true
+  roles:
+    - setup_edge_device
