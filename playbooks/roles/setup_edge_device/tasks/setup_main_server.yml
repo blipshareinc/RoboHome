@@ -1,0 +1,16 @@
+---
+- name: Log into DockerHub
+  shell: docker login -u {{ docker_username }} -p {{ docker_password }}
+  no_log: true
+
+- name: Create a robohome directory if it does not already exist
+  shell: '{{ item }}' 
+  with_items:
+    - sudo mkdir -p {{ deployment_dir }}
+    - sudo chown -R {{ user }}:{{ user }} {{ deployment_dir }}
+  become: true
+
+- name: Deploy the docker-compose.edge.yml
+  template:
+    src: docker-compose.edge.yml.j2
+    dest: '{{ deployment_dir }}/docker-compose.edge.yml'

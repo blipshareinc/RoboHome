@@ -2,3 +2,7 @@
 - name : Install Docker In Raspbian OS Devices
   include_tasks: docker_setup_edge.yml
   when: ansible_distribution == 'Raspbian'
+
+- name : Clone Docker Images Required for Server
+  include_tasks: setup_main_server.yml
+  when: device_type == 'server'

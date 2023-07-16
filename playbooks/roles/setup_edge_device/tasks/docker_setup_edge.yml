@@ -11,6 +11,7 @@
     - ca-certificates
     - curl
     - gnupg
+    - sqlite3
   become: true
 
 - name: Add Docker's official GPG key
@@ -37,6 +38,15 @@
 
 - name: Install Docker Engine
   shell: sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  become: true
+
+- name: Install Docker compose
+  shell: '{{ item }}'
+  with_items:
+    - sudo apt-get install -y libffi-dev libssl-dev
+    - sudo apt install -y python3-dev
+    - sudo apt-get install -y python3 python3-pip
+    - sudo pip3 install docker-compose
   become: true
 
 - name: Give User Permission to access docker

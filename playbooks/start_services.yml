@@ -1,0 +1,10 @@
+---
+- name: Start services
+  hosts: all
+  tasks:
+    - name: Start all docker services 
+      shell: docker-compose -f docker-compose.edge.yml up --detach {{ item }}
+      args:
+        chdir: '{{ deployment_dir }}'
+      with_items:
+        - '{{ services }}'
