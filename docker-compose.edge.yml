@@ -53,12 +53,6 @@ services:
     ports:
       - 0.0.0.0:11005:11005
     restart: on-failure
-  vision-service:
-    image: blipshare/vision-service:edge
-    container_name: vision-service
-    ports:
-      - 0.0.0.0:12000:12000
-    restart: on-failure
   dashboard:
     image: arm32v7/nginx
     container_name: dashboard
