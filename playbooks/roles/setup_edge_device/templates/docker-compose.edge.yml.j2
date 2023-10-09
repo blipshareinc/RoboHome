@@ -28,10 +28,12 @@ services:
     ports:
       - 0.0.0.0:11004:11004
   dashboard:
-    image: blipshare-artifactory:8082/blipshare/dashboard:edge
+    image: arm32v7/nginx
     container_name: dashboard
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./dashboard/vue3/dist:/usr/share/nginx/html
+      - ./dashboard/.nginx/nginx-proxy.conf:/etc/nginx/conf.d/default.conf
       - ./data:/usr/share/nginx/html/output
     ports:
       - 0.0.0.0:80:80
