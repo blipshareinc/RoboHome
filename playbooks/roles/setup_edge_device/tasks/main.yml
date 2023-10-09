@@ -2,3 +2,6 @@
 - name : Install Docker In Raspbian OS Devices
   include_tasks: docker_setup_edge.yml
   when: ansible_distribution == 'Raspbian'
+
+- name : Install Docker In all Devices
+  include_tasks: setup_services.yml
