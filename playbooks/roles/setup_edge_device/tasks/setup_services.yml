@@ -20,5 +20,5 @@
   template:
     src: docker-compose.edge.robots.yml.j2
     dest: '{{ deployment_dir }}/docker-compose.edge.robots.yml'
-    when: ansible_distribution == 'robots'
+    when: ansible_distribution == 'robot'
 
