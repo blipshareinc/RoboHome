@@ -16,9 +16,9 @@
     dest: '{{ deployment_dir }}/docker-compose.edge.yml'
     when: ansible_distribution == 'Raspbian'
 
-- name: Deploy the docker-compose.edge.robots.yml
+- name: Deploy the docker-compose.edge.robot.yml to robot platform
   template:
-    src: docker-compose.edge.robots.yml.j2
-    dest: '{{ deployment_dir }}/docker-compose.edge.robots.yml'
+    src: docker-compose.edge.robot.yml.j2
+    dest: '{{ deployment_dir }}/docker-compose.edge.robot.yml'
     when: ansible_distribution == 'robot'
 
